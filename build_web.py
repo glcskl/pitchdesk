@@ -4,7 +4,7 @@ import base64, io, os
 from PIL import Image, ImageOps
 import qrcode
 
-BASE = os.path.expanduser("~/Desktop/StartUpSpace_VGTU")
+BASE = os.path.dirname(os.path.abspath(__file__))
 IMG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
 QR_DIR = os.path.join(BASE, "qr")
 OUT = os.path.join(BASE, "StartUpSpace_web_prezentatsiya.html")
@@ -46,7 +46,6 @@ PH7 = b64_img(os.path.join(IMG, "IMG_5082.jpeg"), 1600)
 PH8 = b64_img(os.path.join(IMG, "IMG_6117.JPG"), 1600)
 PH9 = b64_img(os.path.join(IMG, "IMG_7735.jpeg"), 1600)
 PH10 = b64_img(os.path.join(IMG, "IMG_7853 2.jpeg"), 1600)
-PH11 = b64_img(os.path.join(IMG, "gemini-3-pro-image-preview-2k (nano-banana-pro)_a_сделай_здание_в_стил.PNG"), 1600)
 FONT_INTER = b64_font(os.path.join(BASE, "fonts", "Inter.ttf"))
 SULOGO = b64_plain(os.path.join(BASE, "su_mark_light.png"), "image/png")
 
@@ -65,7 +64,6 @@ CSS_VARS = (
     "--ph8:" + PH8 + ";\n"
     "--ph9:" + PH9 + ";\n"
     "--ph10:" + PH10 + ";\n"
-    "--ph11:" + PH11 + ";\n"
     "--font-inter:" + FONT_INTER + ";\n"
     "--sulogo:" + SULOGO + ";\n"
     "--qrtg:" + QR_TG + ";\n"
@@ -278,7 +276,7 @@ h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:700;letter-spacing:-.02em;line
   <div class="inner" style="display:flex;flex-direction:column;justify-content:center">
     <h1 class="rv" style="--d:.08s">Сообщество <em>в цифрах</em></h1>
     <div class="kpi">
-      <div class="k rv" style="--d:.16s"><div class="n">5000<u>+</u></div><div class="t">участников</div><div class="l">во всей стране</div></div>
+      <div class="k rv" style="--d:.16s"><div class="n">5000<u>+</u></div><div class="t">участников</div><div class="l">по всей стране</div></div>
       <div class="k rv" style="--d:.22s"><div class="n">150<u>+</u></div><div class="t">стартап-проектов</div><div class="l">запущенных с нуля</div></div>
       <div class="k rv" style="--d:.28s"><div class="n">20</div><div class="t">компаний-партнёров</div><div class="l">дают задачи и призы</div></div>
       <div class="k rv" style="--d:.34s"><div class="n">5</div><div class="t">лет сообществу</div><div class="l">которое продолжает расти</div></div>
@@ -476,20 +474,6 @@ h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:700;letter-spacing:-.02em;line
       </div>
     </div>
     <a class="btn rv" style="--d:.3s;margin-top:34px" href="https://t.me/startup_space_vstu" target="_blank" rel="noopener">Присоединиться к каналу →</a>
-  </div>
-</section>
-
-<!-- 14 · ФИНАЛ -->
-<section class="slide">
-  <div class="photo" style="background-image:var(--ph11);background-position:center 35%"></div>
-  <div class="shade-c"></div>
-  <div class="inner" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center">
-    <h1 class="rv" style="--d:.1s;max-width:900px">Идеи без действий<br><em style="color:#E5484D">ничего не стоят.</em></h1>
-    <p class="lead rv" style="--d:.2s;text-align:center;color:#fff;font-weight:700">Приходи на хакатон — пусть твой первый стартап начнётся именно в VSTU.</p>
-    <div class="rv" style="--d:.3s;margin-top:28px;display:flex;flex-direction:column;align-items:center;gap:20px">
-      <div style="font-size:clamp(1.2rem,1.9vw,1.5rem);font-weight:650;letter-spacing:.01em">Присоединяйтесь</div>
-      <a class="btn" href="https://t.me/startup_space_vstu" target="_blank" rel="noopener">Присоединиться к каналу →</a>
-    </div>
   </div>
 </section>
 
