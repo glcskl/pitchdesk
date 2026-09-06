@@ -460,6 +460,7 @@ h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:700;letter-spacing:-.02em;line
         <div class="nt">руководитель филиала — пиши напрямую</div>
       </div>
     </div>
+    <a class="btn rv" style="--d:.42s;margin-top:34px" href="https://t.me/startup_space_vstu" target="_blank" rel="noopener">Присоединиться к каналу →</a>
   </div>
 </section>
 
@@ -470,8 +471,9 @@ h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:700;letter-spacing:-.02em;line
   <div class="inner" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center">
     <h1 class="rv" style="--d:.1s;max-width:900px">Идеи без действий<br><em>ничего не стоят.</em></h1>
     <p class="lead rv" style="--d:.2s;text-align:center">Приходи на хакатон — пусть твой первый стартап начнётся именно в VSTU.</p>
-    <div class="rv" style="--d:.3s;margin-top:28px">
+    <div class="rv" style="--d:.3s;margin-top:28px;display:flex;flex-direction:column;align-items:center;gap:20px">
       <div style="font-size:clamp(1.2rem,1.9vw,1.5rem);font-weight:650;letter-spacing:.01em">Присоединяйтесь</div>
+      <a class="btn" href="https://t.me/startup_space_vstu" target="_blank" rel="noopener">Присоединиться к каналу →</a>
     </div>
   </div>
 </section>
