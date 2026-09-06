@@ -122,6 +122,21 @@ h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:700;letter-spacing:-.02em;line
 .qcard .nw{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin-top:18px}
 .qcard .hd{font-size:clamp(1.05rem,1.5vw,1.3rem);font-weight:700;letter-spacing:-.01em;margin-top:6px}
 .qcard .nt{font-size:13px;color:var(--mut);margin-top:8px;line-height:1.4}
+/* карусель QR */
+.car{position:relative;width:100%;max-width:780px;height:436px;margin:40px auto 0;overflow:hidden}
+.car .qcard{position:absolute;top:0;left:50%;width:min(300px,64vw);padding:34px 26px 30px;
+  background:rgba(8,16,34,.62);border:1px solid var(--hair);border-radius:26px;text-align:center;
+  backdrop-filter:blur(8px);opacity:.5;pointer-events:none;z-index:1;
+  transform:translate(calc(-50% - clamp(150px,22vw,300px)),0) scale(.66);
+  transition:transform .6s cubic-bezier(.22,.8,.36,1),opacity .45s ease,border-color .3s}
+.car .qcard.c-c{transform:translate(-50%,0) scale(1);opacity:1;z-index:3;pointer-events:auto}
+.car .qcard.c-r{transform:translate(calc(-50% + clamp(150px,22vw,300px)),0) scale(.66)}
+.car .qcard.c-l{transform:translate(calc(-50% - clamp(150px,22vw,300px)),0) scale(.66)}
+.car .qcard.hl{border-color:rgba(251,154,36,.55);background:linear-gradient(180deg,rgba(251,154,36,.12),rgba(8,16,34,.6))}
+.car .qbox{width:190px;height:190px;background-color:#fff;background-size:cover;border-radius:20px;margin:0 auto}
+.car .nw{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin-top:18px}
+.car .hd{font-size:clamp(1.15rem,1.9vw,1.5rem);font-weight:700;letter-spacing:-.01em;margin-top:6px}
+.car .nt{font-size:13px;color:var(--mut);margin-top:8px;line-height:1.4}
 
 /* кнопки, бейджи */
 .btn{display:inline-flex;align-items:center;gap:10px;background:var(--brand);color:#fff;font-weight:700;
@@ -334,15 +349,15 @@ h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:700;letter-spacing:-.02em;line
 <!-- 10 · ПУТЬ -->
 <section class="slide">
   <div class="inner" style="display:flex;flex-direction:column;justify-content:center">
-    <h1 class="rv" style="--d:.06s">Путь от идеи<br>до <em>стартапа</em></h1>
+    <h1 class="rv" style="--d:.2s">Путь от идеи<br>до <em>стартапа</em></h1>
     <div class="road">
-      <div class="rd rv" style="--d:.16s"><div class="dot"></div><div class="step">01</div><h4>Идея</h4><p>или просто интерес — этого достаточно</p></div>
-      <div class="rd rv" style="--d:.22s"><div class="dot"></div><div class="step">02</div><h4>Хакатон</h4><p>команда и первый опыт за 48 часов</p></div>
-      <div class="rd rv" style="--d:.28s"><div class="dot"></div><div class="step">03</div><h4>Space University</h4><p>акселерация и питчинг</p></div>
-      <div class="rd rv" style="--d:.34s"><div class="dot"></div><div class="step">04</div><h4>Generation</h4><p>форум и демо-день</p></div>
-      <div class="rd rv" style="--d:.4s"><div class="dot"></div><div class="step">05</div><h4>Резидент</h4><p>поддержка и рост проекта</p></div>
+      <div class="rd rv" style="--d:1.2s"><div class="dot"></div><div class="step">01</div><h4>Идея</h4><p>или просто интерес — этого достаточно</p></div>
+      <div class="rd rv" style="--d:2.2s"><div class="dot"></div><div class="step">02</div><h4>Хакатон</h4><p>команда и первый опыт за 48 часов</p></div>
+      <div class="rd rv" style="--d:3.2s"><div class="dot"></div><div class="step">03</div><h4>Space University</h4><p>акселерация и питчинг</p></div>
+      <div class="rd rv" style="--d:4.2s"><div class="dot"></div><div class="step">04</div><h4>Generation</h4><p>форум и демо-день</p></div>
+      <div class="rd rv" style="--d:5.2s"><div class="dot"></div><div class="step">05</div><h4>Резидент</h4><p>поддержка и рост проекта</p></div>
     </div>
-    <p class="lead rv" style="--d:.5s;margin-top:40px;max-width:600px">Хакатон — лучший «первый шаг»: он не требует ни идеи, ни готовой команды.</p>
+    <p class="lead rv" style="--d:6.2s;margin-top:40px;max-width:600px">Хакатон — лучший «первый шаг»: он не требует ни идеи, ни готовой команды.</p>
   </div>
 </section>
 
@@ -381,27 +396,27 @@ h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:700;letter-spacing:-.02em;line
 <section class="slide">
   <div class="inner" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center">
     <h1 class="rv" style="--d:.06s">Присоединяйся</h1>
-    <div class="qs">
-      <div class="qcard rv" style="--d:.18s">
+    <div class="car rv" id="car" style="--d:.18s">
+      <div class="qcard c-c">
         <div class="qbox" style="background-image:var(--qrtg)"></div>
         <div class="nw">Telegram</div>
         <div class="hd">@startup_space_vstu</div>
         <div class="nt">канал сообщества VSTU</div>
       </div>
-      <div class="qcard rv" style="--d:.26s">
+      <div class="qcard">
         <div class="qbox" style="background-image:var(--qrig)"></div>
         <div class="nw">Instagram</div>
         <div class="hd">@space_vstu</div>
         <div class="nt">фото, видео, анонсы</div>
       </div>
-      <div class="qcard hl rv" style="--d:.34s">
+      <div class="qcard hl">
         <div class="qbox" style="background-image:var(--qrgb)"></div>
         <div class="nw">Глеб Токарь</div>
         <div class="hd">@glebentired</div>
         <div class="nt">руководитель филиала — пиши напрямую</div>
       </div>
     </div>
-    <a class="btn rv" style="--d:.42s;margin-top:34px" href="https://t.me/startup_space_vstu" target="_blank" rel="noopener">Присоединиться к каналу →</a>
+    <a class="btn rv" style="--d:.3s;margin-top:34px" href="https://t.me/startup_space_vstu" target="_blank" rel="noopener">Присоединиться к каналу →</a>
   </div>
 </section>
 
@@ -410,8 +425,8 @@ h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:700;letter-spacing:-.02em;line
   <div class="photo" style="background-image:var(--ph11);background-position:center 35%"></div>
   <div class="shade-c"></div>
   <div class="inner" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center">
-    <h1 class="rv" style="--d:.1s;max-width:900px">Идеи без действий<br><em>ничего не стоят.</em></h1>
-    <p class="lead rv" style="--d:.2s;text-align:center">Приходи на хакатон — пусть твой первый стартап начнётся именно в VSTU.</p>
+    <h1 class="rv" style="--d:.1s;max-width:900px">Идеи без действий<br><em style="color:#E5484D">ничего не стоят.</em></h1>
+    <p class="lead rv" style="--d:.2s;text-align:center;color:#fff;font-weight:700">Приходи на хакатон — пусть твой первый стартап начнётся именно в VSTU.</p>
     <div class="rv" style="--d:.3s;margin-top:28px;display:flex;flex-direction:column;align-items:center;gap:20px">
       <div style="font-size:clamp(1.2rem,1.9vw,1.5rem);font-weight:650;letter-spacing:.01em">Присоединяйтесь</div>
       <a class="btn" href="https://t.me/startup_space_vstu" target="_blank" rel="noopener">Присоединиться к каналу →</a>
@@ -464,6 +479,24 @@ h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:700;letter-spacing:-.02em;line
   document.addEventListener('touchstart',function(e){tx=e.changedTouches[0].clientX});
   document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-tx;
     if(Math.abs(dx)>60){dx<0?go(cur+1):go(cur-1)}},{passive:true});
+  var car=document.getElementById('car');
+  if(car){
+    var citems=[].slice.call(car.querySelectorAll('.qcard')),cidx=0,tt;
+    function cs(){
+      citems.forEach(function(el,i){
+        var r=(i-cidx+citems.length)%citems.length;
+        el.classList.toggle('c-c',r===0);
+        el.classList.toggle('c-r',r===1);
+        el.classList.toggle('c-l',r===2);
+      });
+    }
+    function cgo(d){cidx=(cidx+d+citems.length)%citems.length;cs();crestart()}
+    function crestart(){clearInterval(tt);tt=setInterval(function(){cgo(1)},4200)}
+    car.addEventListener('mouseenter',function(){clearInterval(tt)});
+    car.addEventListener('mouseleave',crestart);
+    cs();
+    crestart();
+  }
   render();
 })();
 </script>
