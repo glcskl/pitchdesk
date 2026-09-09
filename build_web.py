@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import base64, io, os
-from PIL import Image, ImageOps
+from PIL import Image, ImageDraw, ImageOps
 import qrcode
 
 BASE = os.path.dirname(os.path.abspath(__file__))
@@ -28,12 +28,41 @@ def b64_plain(path, mime="image/svg+xml"):
     with open(path, "rb") as f:
         return "url(data:" + mime + ";base64," + base64.b64encode(f.read()).decode() + ")"
 
-def qr(url, name):
+def qr(url, name, px):
+    """Стиль «Точки»: круглые чёрные модули, квадратные чёрные локаторы.
+    Размер файла (px) не меняет саму ссылку — только внешний вид."""
     os.makedirs(QR_DIR, exist_ok=True)
     p = os.path.join(QR_DIR, name + ".png")
-    qrcode.make(url, box_size=12, border=2).save(p)
+    q = qrcode.QRCode(box_size=1, border=2, error_correction=qrcode.constants.ERROR_CORRECT_L)
+    q.add_data(url)
+    q.make(fit=True)
+    m = q.modules
+    n = len(m)
+    s = max(1, px // n)
+    size = n * s
+    img = Image.new("RGB", (size, size), "white")
+    d = ImageDraw.Draw(img)
+    c = 7  # размер локатора в модулях
+    for i in range(n):
+        for j in range(n):
+            if not m[i][j]:
+                continue
+            x0, y0 = j * s, i * s
+            in_finder = (
+                (i < c and j < c)
+                or (i < c and j >= n - c)
+                or (i >= n - c and j < c)
+            )
+            if in_finder:
+                d.rectangle((x0, y0, x0 + s - 1, y0 + s - 1), fill=(0, 0, 0))
+            else:
+                r = s * 0.36
+                cx0 = x0 + s / 2
+                cy0 = y0 + s / 2
+                d.ellipse((cx0 - r, cy0 - r, cx0 + r, cy0 + r), fill=(0, 0, 0))
+    img.save(p)
     buf = io.BytesIO()
-    Image.open(p).save(buf, "PNG")
+    img.save(buf, "PNG")
     return "url(data:image/png;base64," + base64.b64encode(buf.getvalue()).decode() + ")"
 
 PH1 = b64_img(os.path.join(IMG, "IMG_6111.JPG"), 1600)
@@ -49,9 +78,9 @@ PH10 = b64_img(os.path.join(IMG, "IMG_7853 2.jpeg"), 1600)
 FONT_INTER = b64_font(os.path.join(BASE, "fonts", "Inter.ttf"))
 SULOGO = b64_plain(os.path.join(BASE, "su_mark_light.png"), "image/png")
 
-QR_TG = qr("https://t.me/startupspacevstu", "tg")
-QR_IG = qr("https://www.instagram.com/space_vstu/", "ig")
-QR_GB = qr("https://t.me/glebentired", "gb")
+QR_TG = qr("https://t.me/startupspacevstu", "tg", 528)
+QR_IG = qr("https://www.instagram.com/space_vstu/", "ig", 528)
+QR_GB = qr("https://t.me/glebentired", "gb", 464)
 
 CSS_VARS = (
     "--ph1:" + PH1 + ";\n"
@@ -180,8 +209,8 @@ h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:700;letter-spacing:-.02em;line
 .qcard .hd{font-size:clamp(1.05rem,1.5vw,1.3rem);font-weight:700;letter-spacing:-.01em;margin-top:6px}
 .qcard .nt{font-size:13px;color:var(--mut);margin-top:8px;line-height:1.4}
 /* карусель QR */
-.car{position:relative;width:100%;max-width:780px;height:436px;margin:40px auto 0;overflow:hidden}
-.car .qcard{position:absolute;top:0;left:50%;width:min(300px,64vw);padding:34px 26px 30px;
+.car{position:relative;width:100%;max-width:820px;height:520px;margin:40px auto 0;overflow:hidden}
+.car .qcard{position:absolute;top:0;left:50%;width:min(360px,72vw);padding:34px 26px 30px;
   background:rgba(8,16,34,.62);border:1px solid var(--hair);border-radius:26px;text-align:center;
   backdrop-filter:blur(8px);opacity:.5;pointer-events:none;z-index:1;
   transform:translate(calc(-50% - clamp(150px,22vw,300px)),0) scale(.66);
@@ -190,7 +219,7 @@ h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:700;letter-spacing:-.02em;line
 .car .qcard.c-r{transform:translate(calc(-50% + clamp(150px,22vw,300px)),0) scale(.66)}
 .car .qcard.c-l{transform:translate(calc(-50% - clamp(150px,22vw,300px)),0) scale(.66)}
 .car .qcard.hl{border-color:rgba(251,154,36,.55);background:linear-gradient(180deg,rgba(251,154,36,.12),rgba(8,16,34,.6))}
-.car .qbox{width:190px;height:190px;background-color:#fff;background-size:cover;border-radius:20px;margin:0 auto}
+.car .qbox{width:250px;height:250px;background-color:#fff;background-size:cover;border-radius:20px;margin:0 auto}
 .car .nw{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin-top:18px}
 .car .hd{font-size:clamp(1.15rem,1.9vw,1.5rem);font-weight:700;letter-spacing:-.01em;margin-top:6px}
 .car .nt{font-size:13px;color:var(--mut);margin-top:8px;line-height:1.4}
@@ -473,7 +502,6 @@ h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:700;letter-spacing:-.02em;line
         <div class="nt">руководитель филиала — пиши напрямую</div>
       </div>
     </div>
-    <a class="btn rv" style="--d:.3s;margin-top:34px" href="https://t.me/startup_space_vstu" target="_blank" rel="noopener">Присоединиться к каналу →</a>
   </div>
 </section>
 
