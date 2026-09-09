@@ -475,7 +475,7 @@ h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:700;letter-spacing:-.02em;line
       });
     }
     function cgo(d){cidx=(cidx+d+citems.length)%citems.length;cs();crestart()}
-    function crestart(){clearInterval(tt);tt=setInterval(function(){cgo(1)},4200)}
+    function crestart(){clearInterval(tt);tt=setInterval(function(){cgo(1)},8400)}
     car.addEventListener('mouseenter',function(){clearInterval(tt)});
     car.addEventListener('mouseleave',crestart);
     cs();
