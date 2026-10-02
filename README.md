@@ -1,83 +1,73 @@
-# 📊 pitchdesk
+# pitchdesk — self-contained offline pitch deck
 
-**6–9 сентября 2026, личный проект.** Задача: показать презентацию StartUp Space на телефоне, когда интернет плохой или его нет. Решение: **pitchdesk** — самодостаточный HTML на 12 слайдов, в который картинки, шрифт и QR-коды вшиты прямо в разметку. Один файл, ноль сетевых запросов.
+A startup pitch deck that works on a phone with unreliable internet. Instead of a folder of files that a viewer must download, the build script produces one HTML file with every image, font and style embedded, plus a QR code that points at it. Once the file is on the phone, the deck opens with no network access at all.
 
-Ни CDN, ни Google Fonts, ни внешних картинок. Открыл файл — работает.
+Built as a personal project between 6 and 9 September 2026.
 
----
+## Features
 
-## Что внутри
+- Single self-contained HTML output, no external requests at runtime
+- Images embedded as base64, so nothing depends on an image host
+- Fonts embedded, so text renders identically offline
+- QR code generated so the deck can be opened on a second device
+- Layout fixed for a phone viewport, tested at presentation size
+- Repeatable build from the source assets
 
-| Файл | Размер | Назначение |
-|---|---|---|
-| `StartUpSpace_web_prezentatsiya.html` | 3.4 МБ | итоговая презентация, всё внутри |
-| `index.html` | 326 б | редирект на презентацию |
-| `build_web.py` | — | сборщик, создаёт итоговый HTML |
-| `assets/` | 27 МБ | 11 исходных изображений |
-| `fonts/Inter.ttf` | 264 КБ | шрифт презентации |
-| `qr/` | 40 КБ | 6 QR-кодов: gb, ig, li, sd, tg, vk |
-| `su_mark_light.png` | — | логотип StartUp Space |
+## Tech stack
 
-## Как собирается
+| Layer | Technology |
+| --- | --- |
+| Build script | Python 3 |
+| Image processing | Pillow |
+| QR generation | qrcode |
+| Encoding | base64, standard library |
+| Output | Static HTML |
 
-`build_web.py` превращает исходники в единый файл. Нужны `Pillow` и `qrcode`.
+## Getting started
 
-**Картинки.** `ImageOps.exif_transpose` разворачивает снимки по EXIF, большие ужимаются через `thumbnail` с фильтром LANCZOS, сохраняются как JPEG с качеством 84 и вставляются в CSS как `url(data:image/jpeg;base64,...)`.
+### Requirements
 
-**Шрифт.** `Inter.ttf` кодируется в `url(data:font/ttf;base64,...)`, поэтому текст выглядит одинаково на любой машине.
+- Python 3.9 or newer
 
-**QR-коды.** Генерируются библиотекой `qrcode` с `box_size=1`, `border=2`, уровнем коррекции `L`, затем рисуются **точками** через `ImageDraw.ellipse` — не квадраты, а круглые точки в фирменной сетке.
+### Environment variables
 
-Сейчас вшиваются три кода с разным размером:
+None. The build is fully local.
 
-| Сеть | Размер |
-|---|---|
-| Telegram | 528 px |
-| Instagram | 528 px |
-| GB | 464 px |
-
-`assets/` занимает 27 МБ, а итоговый HTML весит 3.4 МБ — в результат попадает не всё, только то, что реально используется на слайдах.
+### Installation
 
 ```bash
-python3 build_web.py
+git clone https://github.com/glcskl/pitchdesk.git
+cd pitchdesk
+python -m venv .venv
+source .venv/bin/activate
+pip install pillow qrcode
 ```
 
-## Особенности
+### Running
 
-- 📱 **12 слайдов**, горизонтальная навигация
-- 🐢 **Перелистывание замедлено до 8400 мс** — слайд успевают рассмотреть, а не пролистать
-- 🔲 QR-коды точечным паттерном, увеличены на слайде контактов
-- 🔤 Кириллица вшита шрифтом, а не полагается на системные гарнитуры
-- 🎨 Нативный CSS без фреймворков и сборщиков
+Place the source images into `assets/`, then build:
 
-## Зачем так
-
-Обычная браузерная презентация тянет картинки по сети. На выступлении это риск: нет сети — нет половины слайдов. Здесь каждый байт уже внутри файла, поэтому HTML можно скинуть в мессенджер, положить на флешку или открыть с телефона офлайн.
-
-## Структура
-
-```
-pitchdesk/
-├── build_web.py                             сборщик: base64-инлайн картинок, шрифта, QR
-├── StartUpSpace_web_prezentatsiya.html      итоговый файл, открывать его
-├── index.html                               редирект на итоговый
-├── assets/                                  11 исходных изображений, 27 МБ
-├── fonts/Inter.ttf                          встроенный шрифт
-├── qr/                                      6 QR-кодов
-└── su_mark_light.png                        логотип StartUp Space
+```bash
+python build_web.py
 ```
 
-## Известные ограничения
+The script writes a self-contained HTML file and a QR code, and refreshes the redirect in `index.html`.
 
-- **`index.html` — только редирект.** Открыв корень на хостинге, пользователь увидит страницу «Перенаправление…», а не слайды.
-- **Половина репозитория — неиспользуемые исходники.** `assets/` занимает 27 МБ при размере репозитория 35 МБ, причём в итоговый HTML попадает меньше части. Клинится медленно.
-- **В каталоге `qr/` шесть файлов, а используются три** — `li.png`, `sd.png` и `vk.png` в сборщике не упоминаются. Мёртвый груз.
-- **Исходник и сборка хранятся вместе** — каждая правка коммитит и правки, и 3.4 МБ пересобранного HTML, история распухает.
-- **Сборщик жёстко зашит на одну презентацию** — пути, размеры QR и тексты слайдов лежат прямо в `build_web.py`, переиспользовать под другую деку нельзя без правок кода.
-- **Навигация и анимации вручную**, поэтому поведение горизонтального скролла на мобильных надо проверять руками.
-- **Тестов нет.**
-- **Лицензии нет.** Формально все права защищены.
+## Project structure
 
-## Лицензия
+```
+build_web.py                     build script
+index.html                       entry point, redirects to the deck
+StartUpSpace_web_prezentatsiya.html   generated deck
+assets/                          source images
+fonts/                           fonts embedded into the output
+qr/                              generated QR code
+```
 
-Файл `LICENSE` отсутствует. Формально все права защищены. Добавить лицензию — скажи, какой.
+## Build process
+
+`build_web.py` reads the images from `assets/`, normalises them with Pillow, encodes each one as a base64 data URI, inlines the fonts as base64, assembles the deck and writes the result as a single HTML file. The QR code is generated from the deck location and written to `qr/`.
+
+## Notes
+
+The file is large, because everything is embedded by design. That is the trade-off that makes it work without a connection. The deck is a presentation artefact; the build script is the source of truth.
